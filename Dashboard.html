@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Style for header */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+      }
+
+      /* Style for logout button */
+      #logoutButton {
+        background-color: #fff;
+        color: #333;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      /* Style for footer left panel */
+      .footer-left {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background-color: #f8f9fa;
+        padding: 20px;
+      }
+
+      /* Style for footer right panel */
+      .footer-right {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background-color: #f8f9fa;
+        padding: 20px;
+      }
+
+      /* Style for text area */
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s;
+      }
+
+      /* Style for post answer button */
+      /* Style for post answer button */
+      button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+      }
+      header {
+        position: static;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+      }
+      #logoutButton {
+        background-color: #fff;
+        color: #333;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+      .footer-left {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background-color: #f8f9fa;
+        padding: 20px;
+      }
+      .footer-right {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background-color: #f8f9fa;
+        padding: 20px;
+      }
+      li {
+        list-style-type: disc;
+        color: #007bff;
+        font-weight: 10px;
+        margin-top: 10px;
+      }
+      span {
+        border: 5ps solid #000;
+      }
+      img {
+        height: 30px;
+        width: 200px;
+        background-size: contain;
+        box-shadow: 2px;
+        border-radius: 10px;
+        border-top-left-radius: 15px;
+        border-color: black;
+        object-fit: cover;
+      }
+      btn {
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header portion -->
+    <header>
+      <div>
+        <h1>Welcome to the Forum</h1>
+      </div>
+      <div>
+        <!-- Logout button -->
+        <button id="logoutButton">Logout</button>
+      </div>
+    </header>
+
+    <!-- Main content area -->
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Left panel with footer -->
+        <div class="col-md-3 footer-left">
+          <!-- University panel content -->
+          <!-- University panel content -->
+          <h3>University Panel</h3>
+          <hr />
+          <ul>
+            <li><img src="Science.png" alt="" />Science</li>
+            <li><img src="History.jpg" alt="" />History</li>
+            <li><img src="Politics.jpg" alt="" />Politics</li>
+            <li><img src="Sports.jpg" alt="" />Sports</li>
+            <li><img src="trending.png" alt="" />Trending</li>
+            <li><img src="research.jpg" alt="" />Research</li>
+            <li><img src="Current affairs.png" alt="" />Current Affairs</li>
+            <li>MANY MORE..</li>
+            <!-- Add more topics as needed -->
+          </ul>
+        </div>
+
+        <!-- Main forum content area -->
+        <div class="col-md-6">
+          <!-- Form for posting a question -->
+          <h2>Post a Question</h2>
+          <form id="questionForm">
+            <div class="form-group">
+              <label for="question">Question:</label>
+              <textarea
+                id="question"
+                name="question"
+                rows="4"
+                class="form-control"
+                placeholder="Type your Query here:"
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Post Question</button>
+          </form>
+
+          <!-- Container for displaying questions and answers -->
+          <div id="forumContainer"></div>
+        </div>
+
+        <!-- Right panel with quotes -->
+        <div class="col-md-3 footer-right">
+          <!-- Quotes of great personalities -->
+          <h3>Great Personalities' Quotes</h3>
+          <hr />
+          <div>
+            <p>
+              The greatest glory in living lies not in never falling, but in
+              rising every time we fall. -<b>Nelson Mandela</b>
+            </p>
+          </div>
+          <hr />
+          <div>
+            <p>
+              Your time is limited, so don't waste it living someone else's
+              life. Don't be trapped by dogma – which is living with the results
+              of other people's thinking. - <b>Steve Jobs</b>
+            </p>
+          </div>
+          <hr />
+          <div>
+            <p>
+              You may say I'm a dreamer, but I'm not the only one. I hope
+              someday you'll join us. And the world will live as one. -
+              <b>John Lennon</b>
+            </p>
+          </div>
+          <!-- Add more quotes as needed -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        getDocs,
+        doc,
+        deleteDoc,
+      } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBNgTO9OXvK9x0W9bvWys4nxXgNT1YQMU4",
+        authDomain: "kjashdlfgailes.firebaseapp.com",
+        projectId: "kjashdlfgailes",
+        storageBucket: "kjashdlfgailes.appspot.com",
+        messagingSenderId: "21405036413",
+        appId: "1:21405036413:web:2332b59605f73714f52614",
+        measurementId: "G-35978CE7DJ",
+      };
+
+      // Initialize Firebase
+      const firebaseApp = initializeApp(firebaseConfig);
+
+      // Initialize Firestore and Auth
+      const db = getFirestore(firebaseApp);
+      const auth = getAuth(firebaseApp);
+
+      // Logout function
+      function logout() {
+        auth
+          .signOut()
+          .then(() => {
+            console.log("User signed out");
+            window.location.href = "https://www.google.com";
+          })
+          .catch((error) => {
+            console.error("Error signing out:", error);
+          });
+      }
+
+      // Function to fetch answers for a specific question from Firestore and display them
+      async function fetchAnswers(questionId) {
+        const answersContainer = document.getElementById(
+          `answers_${questionId}`
+        );
+        try {
+          // Query Firestore for answers of the given questionId
+          const querySnapshot = await getDocs(
+            collection(db, `questions/${questionId}/answers`)
+          );
+          answersContainer.innerHTML = ""; // Clear existing content
+          querySnapshot.forEach((doc) => {
+            const answerData = doc.data();
+            const answerHtml = `
+                <div class="answer-box">
+                    <p>${answerData.answer}</p>
+                    <p>Posted by: ${
+                      answerData.userEmail
+                    } <span>|</span> ${answerData.timestamp
+              .toDate()
+              .toLocaleString()}</p>
+                    <button style="color:class="deleteButton" onclick="deleteAnswer('${questionId}', '${
+              doc.id
+            }')">Delete</button>
+                </div>`;
+            answersContainer.innerHTML += answerHtml;
+          });
+        } catch (error) {
+          console.error("Error fetching answers: ", error);
+        }
+      }
+
+      // Function to delete an answer
+      async function deleteAnswer(questionId, answerId) {
+        try {
+          await deleteDoc(
+            doc(db, `questions/${questionId}/answers/${answerId}`)
+          );
+          alert("Answer deleted successfully");
+          // Refresh the answers after deletion
+          fetchAnswers(questionId);
+        } catch (error) {
+          console.error("Error deleting answer: ", error);
+        }
+      }
+
+      // Function to delete a question
+      async function deleteQuestion(questionId) {
+        try {
+          await deleteDoc(doc(db, "questions", questionId));
+          console.log("Question deleted successfully");
+          alert("Question deleted successfully");
+          // Reload the page after deletion
+          location.reload();
+        } catch (error) {
+          console.error("Error deleting question: ", error);
+        }
+      }
+
+      // Add event listener for form submissions on the forum container
+      document
+        .getElementById("forumContainer")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault(); // Prevent form submission
+
+          // Check if the submitted form is an answer form
+          if (
+            event.target &&
+            event.target.nodeName === "FORM" &&
+            event.target.id.startsWith("answerForm_")
+          ) {
+            const questionId = event.target.id.replace("answerForm_", "");
+            const answer = document.getElementById(
+              `answer_${questionId}`
+            ).value;
+            const currentUser = auth.currentUser;
+
+            if (currentUser) {
+              try {
+                // User is logged in, proceed with posting the answer
+                await addDoc(
+                  collection(db, `questions/${questionId}/answers`),
+                  {
+                    answer: answer,
+                    timestamp: new Date(),
+                    userEmail: currentUser.email,
+                  }
+                );
+                console.log("Answer posted successfully");
+                alert("Answer posted successfully");
+                // Clear the textarea after posting the answer
+                document.getElementById(`answer_${questionId}`).value = "";
+                // Fetch and display answers again to include the newly posted answer
+                fetchAnswers(questionId);
+              } catch (error) {
+                console.error("Error posting answer: ", error);
+              }
+            } else {
+              // User is not logged in, prompt them to log in
+              alert("Please log in to post an answer.");
+            }
+          }
+        });
+
+      // Add event listener to the question form
+      document
+        .getElementById("questionForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault(); // Prevent form submission
+          const question = document.getElementById("question").value;
+          const currentUser = auth.currentUser;
+
+          if (currentUser) {
+            try {
+              // User is logged in, proceed with posting the question
+              const docRef = await addDoc(collection(db, "questions"), {
+                question: question,
+                timestamp: new Date(),
+                userEmail: currentUser.email,
+              });
+              console.log("Question posted successfully");
+              alert("Question posted successfully");
+              // Clear the textarea after posting the question
+              document.getElementById("question").value = "";
+              // Fetch and display answers again to include the newly posted answer
+              fetchAnswers(docRef.id);
+            } catch (error) {
+              console.error("Error posting question: ", error);
+            }
+          } else {
+            // User is not logged in, prompt them to log in
+            alert("Please log in to post a question.");
+          }
+        });
+
+      // Function to fetch questions from Firestore and display them
+      async function fetchQuestions() {
+        const forumContainer = document.getElementById("forumContainer");
+        try {
+          // Query Firestore for questions
+          const querySnapshot = await getDocs(collection(db, "questions"));
+          forumContainer.innerHTML = ""; // Clear existing content
+          querySnapshot.forEach((doc) => {
+            const questionData = doc.data();
+            const questionId = doc.id;
+            const deleteButton = `<button class="deleteButton" onclick="deleteQuestion('${questionId}')">Delete</button>`;
+            const questionHtml = `
+                <div class="question-box">
+                    <h3>Question:</h3>
+                    <b><p><span style="color:red;">${
+                      questionData.question
+                    }</span></p></b>
+                    <p>User Email: ${
+                      questionData.userEmail
+                    } <span>|</span> ${questionData.timestamp
+              .toDate()
+              .toLocaleString()}</p>
+                    <h4>Answers:</h4>
+                    <ul id="answers_${questionId}"></ul>
+                    <form id="answerForm_${questionId}">
+                        <textarea id="answer_${questionId}" rows="2" cols="40" placeholder="Your answer" class="form-control"></textarea>
+                        <button type="submit" class="btn btn-primary mt-2">Post Answer</button>
+                    </form>
+                    ${deleteButton}
+                </div>
+                <hr>`;
+            forumContainer.innerHTML += questionHtml;
+            // Call fetchAnswers to display answers for this question
+            fetchAnswers(questionId);
+          });
+        } catch (error) {
+          console.error("Error fetching questions: ", error);
+        }
+      }
+
+      // Call fetchQuestions function to initially fetch and display questions
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // If user is authenticated, fetch questions
+          fetchQuestions();
+        } else {
+          // If user is not authenticated, redirect to login page or handle accordingly
+          console.log(
+            "User is not authenticated. Redirecting to login page..."
+          );
+          window.location.href = "login.html"; // Redirect to your login page
+        }
+      });
+
+      // Add event listener to the logout button
+      document
+        .getElementById("logoutButton")
+        .addEventListener("click", function () {
+          logout();
+        });
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

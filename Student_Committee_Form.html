@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit Your Grievance</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        background-color: #f5f5f5;
+      }
+
+      header {
+        position: -webkit-sticky;
+        background-color: #007bff;
+        color: #fff;
+        padding: 2px 0;
+        height: 120px;
+      }
+
+      #logo {
+        width: 200px;
+        height: 120px;
+        margin: 0 auto;
+        display: block;
+        border-radius: 5%;
+        border: 1px solid #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        margin-left: 0px;
+      }
+
+      h1 {
+        margin: 10px 0;
+        color: #333;
+      }
+
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        text-align: left;
+      }
+
+      input[type="text"],
+      input[type="tel"],
+      input[type="email"],
+      select,
+      textarea {
+        width: calc(100% - 24px);
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+
+      select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        /* background: url("arrow-down.png") no-repeat right center; */
+        background-size: 16px 16px;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 12px 24px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      button:focus {
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+    <header>
+      <img id="logo" src="Logo.jpg" alt="Logo" />
+      <h1></h1>
+    </header>
+    <div>
+      <h1>Submit Your Grievance</h1>
+    </div>
+
+    <form id="grievanceForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="rollno">Roll No:</label>
+      <input
+        type="text"
+        id="rollno"
+        name="rollno"
+        required
+        pattern="MCA\/\d{5}\/\d{2}"
+        title="Please enter the roll number in the correct format (e.g., MCA/10057/23)"
+      />
+
+      <label for="course">Course:</label>
+      <select id="course" name="course" required>
+        <option value="">Select Course</option>
+        <option value="Architecture and Planning">
+          Architecture and Planning
+        </option>
+        <option value="Bioengineering and Biotechnology">
+          Bioengineering and Biotechnology
+        </option>
+        <option value="Civil Engineering">Civil Engineering</option>
+        <option value="Chemical Engineering">Chemical Engineering</option>
+        <option value="Computer Science and Engineering">
+          Computer Science and Engineering
+        </option>
+        <option value="Electronics and Communication Engineering">
+          Electronics and Communication Engineering
+        </option>
+        <option value="Mechanical Engineering">Mechanical Engineering</option>
+        <option value="Production Engineering">Production Engineering</option>
+        <option value="M.Pharma">M.Pharma</option>
+        <option value="B.Pharma">B.Pharma</option>
+        <option value="Information Technology">Information Technology</option>
+        <option value="IMSC Mathematics and Computing">
+          IMSC Mathematics and Computing
+        </option>
+        <option value="MBA">MBA</option>
+        <option value="MCA">MCA</option>
+        <option value="Bachelor of Architecture">
+          Bachelor of Architecture
+        </option>
+        <option value="Bachelor of Food Technology">
+          Bachelor of Food Technology
+        </option>
+      </select>
+
+      <label for="program">Program:</label>
+      <select id="program" name="program" required>
+        <option value="">Select Program</option>
+        <option value="B.Tech">B.Tech</option>
+        <option value="M.Tech">M.Tech</option>
+        <option value="Msc">Msc</option>
+        <option value="IMSC">IMSC</option>
+        <option value="PhD">PhD</option>
+      </select>
+
+      <label for="phonenumber">Phone Number:</label>
+      <input
+        type="tel"
+        id="phonenumber"
+        name="phonenumber"
+        required
+        pattern="[0-9]{10}"
+        title="Please enter a 10-digit phone number"
+      />
+
+      <label for="email">Email ID:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        pattern="[A-Za-z]{3}\d{5}\.\d{2}@bitmesra\.ac\.in"
+        title="Please enter email in the correct format"
+      />
+      <label for="category">Grievance Category:</label>
+      <select id="category" name="category" required>
+        <option value="">Select Category</option>
+        <option value="Academic">Academic</option>
+        <option value="Financial">Financial</option>
+        <option value="Hostel">Hostel</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="description">Grievance Description:</label>
+      <textarea id="description" name="description" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        Timestamp,
+      } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBNgTO9OXvK9x0W9bvWys4nxXgNT1YQMU4",
+        authDomain: "kjashdlfgailes.firebaseapp.com",
+        projectId: "kjashdlfgailes",
+        storageBucket: "kjashdlfgailes.appspot.com",
+        messagingSenderId: "21405036413",
+        appId: "1:21405036413:web:2332b59605f73714f52614",
+        measurementId: "G-35978CE7DJ",
+      };
+
+      // Initialize Firebase
+      const firebaseApp = initializeApp(firebaseConfig);
+      const auth = getAuth(firebaseApp);
+      const db = getFirestore(firebaseApp);
+
+      // Form submission event listener
+      document
+        .getElementById("grievanceForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault(); // Prevent form submission
+
+          // Get form values
+          const name = document.getElementById("name").value;
+          const rollNo = document.getElementById("rollno").value;
+          const course = document.getElementById("course").value;
+          const program = document.getElementById("program").value;
+          const phoneNumber = document.getElementById("phonenumber").value;
+          const email = document.getElementById("email").value;
+          const category = document.getElementById("category").value;
+          const description = document.getElementById("description").value;
+          const currentUser = auth.currentUser;
+
+          if (currentUser) {
+            try {
+              // Add grievance to Firestore
+              const docRef = await addDoc(collection(db, "grievances"), {
+                name: name,
+                rollNo: rollNo,
+                course: course,
+                program: program,
+                phoneNumber: phoneNumber,
+                email: email,
+                category: category,
+                description: description,
+                timestamp: Timestamp.now(),
+              });
+              alert("Your Response Has Been Sucessfully Submitted");
+
+              console.log(
+                "Grievance submitted successfully with ID: ",
+                docRef.id
+              );
+
+              window.location.href = "index.html";
+
+              // Reset form after submission
+              document.getElementById("grievanceForm").reset();
+            } catch (error) {
+              console.error("Error submitting grievance: ", error);
+            }
+          } else {
+            alert("You need to be logged in to submit a grievance.");
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forum</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <style>
+      .header {
+        background-color: #007bff;
+        color: white;
+        display: flex;
+        height: 120px;
+        padding: 0px;
+      }
+
+      .logo {
+        width: 250px;
+        height: 120px;
+        position: relative;
+        padding: 0px;
+        margin-left: 0px;
+        padding-left: 0px;
+        left: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+        image-rendering: auto; /* Maintain image quality */
+        border: 2px solid #fff; /* Add border around the logo */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+      }
+
+      .container {
+        margin-top: 20px;
+      }
+
+      .grievance-box {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      button {
+        padding-bottom: 50px;
+        padding-right: 0px;
+      }
+      .btn {
+        margin-left: 250px;
+        background-color: white;
+        color: #007bff;
+      }
+      h1 {
+        padding-left: 20px;
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header p-3">
+      <img src="Logo.jpg" alt="Logo" class="logo" />
+      <h1>BIRLA INSTITUTE OF TECHNOLOGY</h1>
+
+      <button class="btn btn-success">Logout</button>
+    </header>
+
+    <div class="container">
+      <div class="grievance-box">
+        <h2>Committee Response</h2>
+        <!-- Display committee response here -->
+        <div id="committee-response">Loading...</div>
+      </div>
+
+      <div id="grievances-panel">
+        <!-- Grievances will be dynamically added here -->
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        doc,
+        getDocs,
+        query,
+        where,
+      } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+      // Your Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBNgTO9OXvK9x0W9bvWys4nxXgNT1YQMU4",
+        authDomain: "kjashdlfgailes.firebaseapp.com",
+        projectId: "kjashdlfgailes",
+        storageBucket: "kjashdlfgailes.appspot.com",
+        messagingSenderId: "21405036413",
+        appId: "1:21405036413:web:2332b59605f73714f52614",
+        measurementId: "G-35978CE7DJ",
+      };
+
+      // Initialize Firebase
+      const firebaseApp = initializeApp(firebaseConfig);
+      const db = getFirestore(firebaseApp);
+      const auth = getAuth(firebaseApp);
+      const convertTimestampToLocalString = (timestamp) => {
+        const date = new Date(timestamp);
+        return date.toLocaleString();
+      };
+
+      // Function to load committee response
+      const loadCommitteeResponse = async () => {
+        try {
+          const grievancesSnapshot = await getDocs(
+            collection(db, "grievances")
+          );
+          let committeeResponse = "";
+
+          grievancesSnapshot.forEach(async (grievanceDoc) => {
+            const answerQuery = query(
+              collection(db, "grievances", grievanceDoc.id, "answers")
+            );
+            const answerSnapshot = await getDocs(answerQuery);
+
+            answerSnapshot.forEach((answerDoc) => {
+              const answerData = answerDoc.data();
+              committeeResponse += `
+                            <h4>Grievance: ${grievanceDoc.id}</h4>
+                            <p>Response: ${answerData.response}</p>
+                            <p>Response Timestamp:<span style="color:red;">  ${answerData.timestamp
+                              .toDate()
+                              .toLocaleString()}</span></p>}
+                            <hr>
+                        `;
+            });
+          });
+
+          // Display committee response
+          document.getElementById("committee-response").innerHTML =
+            committeeResponse;
+        } catch (error) {
+          console.error("Error loading committee response:", error);
+        }
+      };
+
+      // Function to load grievances
+      const loadGrievances = async () => {
+        try {
+          const grievancesSnapshot = await getDocs(
+            collection(db, "grievances")
+          );
+          const grievancesPanel = document.getElementById("grievances-panel");
+
+          grievancesSnapshot.forEach(async (grievanceDoc) => {
+            const grievanceData = grievanceDoc.data();
+            const answerQuery = query(
+              collection(db, "grievances", grievanceDoc.id, "answers")
+            );
+            const answerSnapshot = await getDocs(answerQuery);
+
+            const grievanceBox = document.createElement("div");
+            grievanceBox.classList.add("grievance-box", "p-3");
+            let responseHtml = "";
+            answerSnapshot.forEach((answerDoc) => {
+              const answerData = answerDoc.data();
+              responseHtml += `
+                            <h4>Response:</h4>
+                            <p style="color:blue;font-size:30px;">${
+                              answerData.response
+                            }</p>
+                            <p>Response Timestamp:<span style="color:red;"> ${answerData.timestamp
+                              .toDate()
+                              .toLocaleString()}</span></p>
+                        `;
+            });
+            grievanceBox.innerHTML = `
+                        <h3>Name:${grievanceData.name}</h3>
+                        <p>Course: ${grievanceData.course}</p>
+                        <h4><p>Description:<span style="color:red;"> ${
+                          grievanceData.description
+                        }</span></p></h4>
+                        <p>Category: ${grievanceData.category}</p>
+                        <p>Program: ${grievanceData.program}</p>
+                        <p>Roll No: ${grievanceData.rollNo}</p>
+                        <p>Timestamp:<span style="color:red;"> ${grievanceData.timestamp
+                          .toDate()
+                          .toLocaleString()}</span></p>
+                        
+                        ${responseHtml}
+                    `;
+            grievancesPanel.appendChild(grievanceBox);
+          });
+        } catch (error) {
+          console.error("Error loading grievances:", error);
+        }
+      };
+
+      // Check if there's a current user
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          loadCommitteeResponse();
+          loadGrievances();
+        }
+      });
+
+      // Logout functionality
+      const logoutButton = document.querySelector(".btn");
+      logoutButton.addEventListener("click", () => {
+        auth
+          .signOut()
+          .then(() => {
+            console.log("User signed out successfully");
+            window.location.href = "index.html";
+          })
+          .catch((error) => {
+            console.error("Error signing out:", error);
+          });
+      });
+    </script>
+  </body>
+</html>

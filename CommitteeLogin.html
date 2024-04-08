@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 0px;
+        position: relative;
+        height: 110px;
+        margin-top: 0px;
+      }
+
+      #logo {
+        width: 300px;
+        height: 120px;
+        position: absolute;
+        left: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+        image-rendering: auto; /* Maintain image quality */
+        border: 2px solid #fff; /* Add border around the logo */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+      }
+
+      /* Custom styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+      }
+      .container {
+        max-width: 400px;
+        /* margin: 100px auto; */
+        margin: 20px 200px 150px 550px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        /* margin-bottom: 20px;
+        margin-top: 10px; */
+        padding-top: 5px;
+      }
+      h1 {
+        padding-top: 20px;
+        padding-left: 350px;
+      }
+      form {
+        margin-bottom: 60px;
+      }
+      label {
+        font-weight: bold;
+      }
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s;
+      }
+      input[type="email"]:focus,
+      input[type="password"]:focus {
+        outline: none;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      }
+      button[type="submit"],
+      .forgot-password-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button[type="submit"]:hover,
+      .forgot-password-btn:hover {
+        background-color: #0056b3;
+      }
+      .signup-link {
+        text-align: center;
+      }
+      .signup-link a {
+        color: #007bff;
+      }
+      .welcome-message {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img id="logo" src="Logo.jpg" alt="Logo" />
+      <b><h1>BIRLA INSTITUTE OF TECHNOLOGY</h1></b>
+      <!-- <h1>Heading with Image</h1> -->
+    </header>
+    <div class="container">
+      <h2>Login</h2>
+      <hr />
+      <div class="welcome-message" id="welcomeMessage"></div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginEmail">Email:</label>
+          <input
+            type="email"
+            id="loginEmail"
+            name="loginEmail"
+            class="form-control"
+            pattern="[a-zA-Z]{5}\d{5}\.\d{2}@bitmesra\.ac\.in"
+            title="Email should be in the format of ABCD12345.67@bitmesra.ac.in"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password:</label>
+          <input
+            type="password"
+            id="loginPassword"
+            name="loginPassword"
+            class="form-control"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button><br /><br />
+        <button
+          type="button"
+          class="btn btn-link forgot-password-btn"
+          id="forgotPasswordBtn"
+        >
+          Forgot Password?
+        </button>
+      </form>
+      <!-- <p class="signup-link">
+        Don't have an account? <a href="Registration.html">Register here</a>
+      </p> -->
+    </div>
+
+    <!-- Include Firebase SDK -->
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js"
+    ></script>
+    <!-- Firebase Configuration -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        sendPasswordResetEmail,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBNgTO9OXvK9x0W9bvWys4nxXgNT1YQMU4",
+        authDomain: "kjashdlfgailes.firebaseapp.com",
+        projectId: "kjashdlfgailes",
+        storageBucket: "kjashdlfgailes.appspot.com",
+        messagingSenderId: "21405036413",
+        appId: "1:21405036413:web:2332b59605f73714f52614",
+        measurementId: "G-35978CE7DJ",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // Define the whitelist of allowed email and password combinations
+      const whitelist = [
+        { email: "btech10057.15@bitmesra.ac.in", password: "Vi@6264664570" },
+        { email: "mtech10099.11@bitmesra.ac.in", password: "Vi@7462009932" },
+        { email: "polyt15679.22@bitmesra.ac.in", password: "Vi@9631538810" },
+        { email: "comps12454.12@bitmesra.ac.in", password: "Vi@728951122" },
+        { email: "mecha56789.11@bitmesra.ac.in", password: "Vi@9631549910" },
+      ];
+
+      // Add event listener to the login form
+      const loginForm = document.getElementById("loginForm");
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault(); // Prevent form submission
+
+        const loginEmail = document.getElementById("loginEmail").value;
+        const loginPassword = document.getElementById("loginPassword").value;
+
+        // Check if the entered email and password match the whitelist
+        const matchedUser = whitelist.find(
+          (user) => user.email === loginEmail && user.password === loginPassword
+        );
+
+        if (matchedUser) {
+          try {
+            // Sign in with email and password
+            const userCredential = await signInWithEmailAndPassword(
+              auth,
+              matchedUser.email,
+              matchedUser.password
+            );
+            // Signed in successfully
+            const user = userCredential.user;
+            console.log("User signed in:", user);
+            // Redirect to a dashboard or any other page upon successful login
+            window.location.href = "Committee_Portal.html";
+            alert("Login Successful! Redirecting...");
+          } catch (error) {
+            // Handle errors
+            const errorMessage = error.message;
+            console.error("Sign-in error:", errorMessage);
+            alert(errorMessage);
+          }
+        } else {
+          alert("Invalid email or password. Please try again.");
+        }
+      });
+
+      // Add event listener to the "Forgot Password?" button
+      const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+      forgotPasswordBtn.addEventListener("click", async () => {
+        const loginEmail = document.getElementById("loginEmail").value;
+
+        try {
+          // Send password reset email
+          await sendPasswordResetEmail(auth, loginEmail);
+          alert("Password reset email sent. Please check your inbox.");
+        } catch (error) {
+          // Handle errors
+          const errorMessage = error.message;
+          console.error("Password reset error:", errorMessage);
+          alert(errorMessage);
+        }
+      });
+
+      // Check authentication status on page load
+      const welcomeMessage = document.getElementById("welcomeMessage");
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in
+          welcomeMessage.textContent = `Welcome ${user.email}!`;
+        }
+      });
+    </script>
+  </body>
+</html>

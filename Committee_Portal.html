@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grievance Forum</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Custom CSS for styling */
+      .header {
+        display: flex;
+        flex-direction: row;
+        position: sticky;
+        top: 0;
+        background-color: #007bff;
+        color: #fff;
+        padding: 0px 0px;
+        z-index: 1000;
+      }
+      .header img {
+        width: 250px;
+        height: 120px;
+      }
+      .panel {
+        position: sticky;
+        top: 60px;
+        background-color: #f8f9fa;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        z-index: 999;
+      }
+      .grievance-box {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .grievance-log {
+        position: sticky;
+        top: auto;
+        margin-top: 5px;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+      }
+      h1 {
+        padding-left: 200px;
+        padding-top: 25px;
+      }
+      .buttons {
+        margin: 35px 40px 35px 320px;
+        background-color: white;
+        color: #007bff;
+        border-radius: 10px;
+      }
+    </style>
+    <!-- Firebase JS SDK -->
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js"
+    ></script>
+    <!-- Firebase Configuration and Initialization -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        doc,
+        getDocs,
+        query,
+        orderBy,
+      } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyBNgTO9OXvK9x0W9bvWys4nxXgNT1YQMU4",
+        authDomain: "kjashdlfgailes.firebaseapp.com",
+        projectId: "kjashdlfgailes",
+        storageBucket: "kjashdlfgailes.appspot.com",
+        messagingSenderId: "21405036413",
+        appId: "1:21405036413:web:2332b59605f73714f52614",
+        measurementId: "G-35978CE7DJ",
+      };
+      // Initialize Firebase
+      const firebaseApp = initializeApp(firebaseConfig);
+      const auth = getAuth(firebaseApp);
+      const db = getFirestore(firebaseApp);
+
+      // Function to fetch grievances from Firestore and display
+      async function fetchGrievances() {
+        const grievanceContainer =
+          document.getElementById("grievanceContainer");
+        // Clear existing grievances if any
+        grievanceContainer.innerHTML = "";
+        try {
+          // Fetch grievances from Firestore
+          const querySnapshot = await getDocs(collection(db, "grievances"));
+          querySnapshot.forEach((doc) => {
+            const grievanceData = doc.data();
+            const grievanceBox = createGrievanceBox(grievanceData, doc.id);
+            grievanceContainer.appendChild(grievanceBox);
+          });
+        } catch (error) {
+          console.error("Error fetching grievances:", error);
+        }
+      }
+      // Function to create HTML box for a grievance
+      function createGrievanceBox(grievanceData, grievanceId) {
+        const box = document.createElement("div");
+        box.classList.add("grievance-box");
+        const title = document.createElement("h4");
+        title.textContent = `Category: ${grievanceData.category}`;
+        const details = document.createElement("p");
+        details.innerHTML = `
+        <strong>Name:</strong> ${grievanceData.name}<br>
+        <strong>Roll No:</strong> ${grievanceData.rollNo}<br>
+        <strong>Course:</strong> ${grievanceData.course}<br>
+        <strong>Program:</strong> ${grievanceData.program}<br>
+        <strong>Phone Number:</strong> ${grievanceData.phoneNumber}<br>
+        <strong>Email:</strong> ${grievanceData.email}<br>
+        <strong>Description:</strong> ${grievanceData.description}<br>
+        <strong>Timestamp:</strong> ${new Date(
+          grievanceData.timestamp.seconds * 1000
+        ).toLocaleString()}<br>
+      `;
+        // Textarea for composing the response
+        const responseTextarea = document.createElement("textarea");
+        responseTextarea.classList.add("form-control");
+        responseTextarea.rows = "3";
+        responseTextarea.placeholder = "Write your response...";
+        // Button to submit the response
+        const submitResponseButton = document.createElement("button");
+        submitResponseButton.textContent = "Submit Response";
+        submitResponseButton.classList.add("btn", "btn-primary", "mt-2");
+        submitResponseButton.onclick = function () {
+          // Here you can implement the logic to submit the response
+          const responseContent = responseTextarea.value;
+          saveResponseToFirebase(grievanceId, responseContent);
+        };
+        box.appendChild(title);
+        box.appendChild(details);
+        box.appendChild(responseTextarea);
+        box.appendChild(submitResponseButton);
+        return box;
+      }
+      // Function to fetch and display grievances
+      async function fetchAndDisplayGrievances(orderByField, order) {
+        const grievanceContainer =
+          document.getElementById("grievanceContainer");
+        // Clear existing grievances if any
+        grievanceContainer.innerHTML = "";
+        try {
+          const snapshot = await getDocs(
+            query(collection(db, "grievances"), orderBy(orderByField, order))
+          );
+          snapshot.forEach((doc) => {
+            const grievanceData = doc.data();
+            const grievanceBox = createGrievanceBox(grievanceData, doc.id);
+            grievanceContainer.appendChild(grievanceBox);
+          });
+        } catch (error) {
+          console.error("Error fetching grievances:", error);
+        }
+      }
+      // Function to save response to Firebase
+      async function saveResponseToFirebase(grievanceId, responseContent) {
+        try {
+          // Add the response to the subcollection 'answers' under the grievance document
+          await addDoc(
+            collection(doc(db, "grievances", grievanceId), "answers"),
+            {
+              response: responseContent,
+              userId: auth.currentUser.uid, // Assuming you're using Firebase Authentication
+              timestamp: new Date(),
+            }
+          );
+          console.log("Response submitted successfully!");
+          alert("Response submitted successfully!");
+          // You can handle success message or further actions here
+        } catch (error) {
+          console.error("Error submitting response:", error);
+          // You can handle error message or further actions here
+        }
+      }
+      // Fetch grievances when the authentication state changes
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // If there is a current user, fetch grievances
+          fetchGrievances();
+          // Enable sorting buttons
+          document.getElementById("sortByDateButton").onclick = function () {
+            fetchAndDisplayGrievances("timestamp", "desc");
+          };
+          document.getElementById("sortByCategoryButton").onclick =
+            function () {
+              fetchAndDisplayGrievances("category");
+            };
+        } else {
+          // Handle scenario when there is no authenticated user
+          alert("No authenticated user found.");
+        }
+      });
+      const logoutButton = document.querySelector(".btn");
+      logoutButton.addEventListener("click", () => {
+        auth
+          .signOut()
+          .then(() => {
+            console.log("User signed out successfully");
+            window.location.href = "index.html";
+          })
+          .catch((error) => {
+            console.error("Error signing out:", error);
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <!-- Logo on the left side -->
+      <img src="Logo.jpg" alt="Logo" />
+      <h1>BIT COMMITTEE FORUM</h1>
+      <button class="buttons btn-success">Logout</button>
+    </div>
+    <!-- Logout button on the right side -->
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Left Panel -->
+        <div class="col-lg-3 col-md-4">
+          <div class="panel">
+            <h4>Sort Grievances</h4>
+            <button
+              id="sortByDateButton"
+              class="btn btn-primary btn-block mb-2 btn-custom"
+            >
+              Sort by Date
+            </button>
+            <button
+              id="sortByCategoryButton"
+              class="btn btn-primary btn-block btn-custom"
+            >
+              Sort by Category
+            </button>
+          </div>
+        </div>
+        <!-- Right Panel -->
+        <div class="col-lg-9 col-md-8">
+          <!-- Grievance Log -->
+          <div class="grievance-log">
+            <h2>Grievances Log</h2>
+          </div>
+          <!-- Main Content Area (Forum Posts) -->
+          <div class="panel" id="grievanceContainer">
+            <!-- Grievances will be dynamically added here -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
