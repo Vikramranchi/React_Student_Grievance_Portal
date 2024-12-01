@@ -20,7 +20,7 @@ const port = process.env.PORT || 5000;
 
 // Middleware setup
 const corsOptions = {
-  origin: 'http://localhost:3000', // Your front-end origin
+  origin: 'https://harmonious-paprenjak-d43e35.netlify.app', // Your front-end origin
 };
 app.use(cors(corsOptions));
 app.use(express.json());
