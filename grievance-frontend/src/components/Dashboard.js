@@ -136,7 +136,7 @@ const Forum = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/questions', {
+      const response = await axios.post('https://react-student-grievance-portal-7.onrender.com/api/questions', {
         email: userEmail, // Use email from decoded token
         questionText: newQuestion,
       });
@@ -160,7 +160,7 @@ const Forum = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/answers', {
+      const response = await axios.post('https://react-student-grievance-portal-7.onrender.com/api/answers', {
         questionId,
         email: userEmail, // Use email from decoded token
         answerText: answer,
