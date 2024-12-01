@@ -11,7 +11,7 @@ const CommitteeLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://react-student-grievance-portal-7.onrender.com/api/auth/login', {
+      const response = await axios.post('https://react-student-grievance-portal-8.onrender.com/api/auth/login', {
         email,
         password,
       });

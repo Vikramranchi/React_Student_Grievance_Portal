@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import axios from "axios";
+import axios from "axios";
 
 const GrievanceForm = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ const GrievanceForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      //const response = await axios.post("https://react-student-grievance-portal-7.onrender.com/api/grievances", formData);
+      const response = await axios.post("https://react-student-grievance-portal-8.onrender.com/api/grievances", formData);
       alert("Your grievance has been submitted successfully!");
       navigate("/first");
       setFormData({
@@ -38,6 +38,7 @@ const GrievanceForm = () => {
         category: "",
         description: "",
       });
+      console.log(response.data);
     } catch (error) {
       console.error("Error submitting grievance: ", error);
     }

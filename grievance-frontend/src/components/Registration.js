@@ -65,7 +65,7 @@ const Registration = () => {
     }
 
     try {
-      const response = await fetch('https://react-student-grievance-portal-7.onrender.com/api/students/register', {
+      const response = await fetch('https://react-student-grievance-portal-8.onrender.com/api/students/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

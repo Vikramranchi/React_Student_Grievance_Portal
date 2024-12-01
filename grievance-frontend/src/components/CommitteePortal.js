@@ -105,7 +105,7 @@ const CommitteePortal = () => {
 
   const fetchGrievances = async () => {
     try {
-      const response = await axios.get('https://react-student-grievance-portal-7.onrender.com/api/grievances');
+      const response = await axios.get('https://react-student-grievance-portal-8.onrender.com/api/grievances');
       console.log('Fetched grievances:', response.data); // Log the response data
       setGrievances(response.data);
       setSortedGrievances(response.data); // Initialize sorted grievances
@@ -123,7 +123,7 @@ const CommitteePortal = () => {
         timestamp: new Date(),
       });
 
-      const response = await axios.post('https://react-student-grievance-portal-7.onrender.com/api/responses', {
+      const response = await axios.post('https://react-student-grievance-portal-8.onrender.com/api/responses', {
         email: grievanceData.email,
         grievanceId: grievanceData._id,
         responseText,
