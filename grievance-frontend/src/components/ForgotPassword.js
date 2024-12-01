@@ -11,7 +11,7 @@ const ForgotPassword = () => {
     setMessage(''); // Clear previous messages
     setError(''); // Clear previous errors
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/forgot-password', {
+      const response = await axios.post('https://react-student-grievance-portal-7.onrender.com/api/auth/forgot-password', {
         email,
       });
       if (response.status === 200) {

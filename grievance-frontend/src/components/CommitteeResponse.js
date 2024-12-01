@@ -38,10 +38,10 @@ function CommitteeResponse() {
     const loadGrievancesAndResponses = async () => {
       setLoading(true);
       try {
-        const grievancesResponse = await axios.get(`http://localhost:5000/api/grievances?email=${userEmail}`);
+        const grievancesResponse = await axios.get(`https://react-student-grievance-portal-7.onrender.com/api/grievances?email=${userEmail}`);
         setGrievances(grievancesResponse.data);
 
-        const responsesResponse = await axios.get(`http://localhost:5000/api/responses?email=${userEmail}`);
+        const responsesResponse = await axios.get(`https://react-student-grievance-portal-7.onrender.com/api/responses?email=${userEmail}`);
         setResponses(responsesResponse.data);
       } catch (error) {
         setError('Failed to load grievances and responses. Please try again later.');

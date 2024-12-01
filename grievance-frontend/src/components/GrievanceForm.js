@@ -25,7 +25,7 @@ const GrievanceForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/grievances", formData);
+      const response = await axios.post("https://react-student-grievance-portal-7.onrender.com/api/grievances", formData);
       alert("Your grievance has been submitted successfully!");
       navigate("/first");
       setFormData({
