@@ -7,7 +7,7 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const resetToken = 'YOUR_TOKEN_HERE'; // Get the token from the URL or state
+ // const resetToken = 'YOUR_TOKEN_HERE'; // Get the token from the URL or state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
