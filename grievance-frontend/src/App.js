@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './components/Welcome';
 import First from './components/First';
 import CommitteeLogin from './components/CommitteeLogin';
-import Committee_Portal from './components/Committee_Portal';
+import CommitteePortal from './components/CommitteePortal';
 import ForgotPassword from './components/ForgotPassword';
 import Login from './components/Login';
 import Registration from './components/Registration';
@@ -20,7 +20,7 @@ function App() {
         <Route path="/first" element={<First />} />
         <Route path="/committee-login" element={<CommitteeLogin />} />
         <Route path="/student-login" element={<Login />} />
-        <Route path="/committee-portal" element={<Committee_Portal />} />
+        <Route path="/committee-portal" element={<CommitteePortal />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/grievance-form" element={<GrievanceForm />} /> {/* Add GrievanceForm route */}
